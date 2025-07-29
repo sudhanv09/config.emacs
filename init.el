@@ -24,7 +24,6 @@
 (setq save-interprogram-paste-before-kill t)
 
 (set-face-attribute 'default nil :font "Iosevka Nerd Font" :height 120)
-(load-theme 'darcula t)
 
 (setq package-enable-at-startup nil) ;; Disables the default package manager.
 (setq straight-check-for-modifications nil)
@@ -49,6 +48,11 @@
 (require 'package)
 
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+
+(use-package darcula-theme
+  :ensure t
+  :config
+  (load-theme 'darcula t))
 
 (use-package dired
   :ensure nil
