@@ -2,12 +2,16 @@
 (setq read-process-output-max (* 1024 1024 4))
 
 (setq user-emacs-directory (file-name-directory load-file-name))
+(setq user-full-name "Sudhanv"
+      user-mail-address "mystogun125@gmail.com")
+
 (defvar user-cache-directory (concat user-emacs-directory "cache/"))
+
 (add-to-list 'load-path "~/.config/emacs/lisp")
+
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
-
 
 (electric-pair-mode t)
 (show-paren-mode 1)
@@ -53,6 +57,39 @@
   :ensure t
   :config
   (load-theme 'darcula t))
+
+(use-package dashboard
+  :ensure t
+  :custom
+  (dashboard-center-content t)
+  (dashboard-items '((agenda . 5)
+                     (projects . 5)
+                     (recents . 5)))
+  (dashboard-set-heading-icons t)
+  (dashboard-set-file-icons t)
+  (dashboard-set-navigator nil)
+  (dashboard-set-init-info t)
+  (dashboard-set-footer t)
+  (initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
+  :config
+  (dashboard-setup-startup-hook))
+
+(use-package nerd-icons
+  :ensure t)
+
+(use-package doom-modeline
+    :ensure t
+    :hook
+    (after-init . doom-modeline-mode))
+
+(use-package which-key
+    :ensure t
+  :diminish
+  :config (which-key-mode))
+
+(use-package ace-window
+  :ensure t
+  :init (setq aw-scope 'global))
 
 (use-package dired
   :ensure nil

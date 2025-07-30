@@ -14,11 +14,6 @@
 (defvar-keymap Window
   :doc "Window Management"
 
-  "h" #'windmove-left
-  "j" #'windmove-down
-  "k" #'windmove-up
-  "l" #'windmove-right
-
   "H" #'shrink-window-horizontally
   "L" #'enlarge-window-horizontally
   "J" #'shrink-window
@@ -26,13 +21,14 @@
 
   "s" #'split-window-below
   "v" #'split-window-right
-  "d" #'delete-window
+
+  
   "o" #'delete-other-windows
   
   "u" #'winner-undo
   "r" #'winner-redo
 
-  "w" #'other-window)
+  "w" #'ace-window)
 
 (defvar-keymap Git
   :doc "Magit / Git Commands"

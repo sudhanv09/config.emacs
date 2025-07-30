@@ -6,3 +6,5 @@ transient
 history
 places
 recentf
+**/*.elc
+auto-save-list
