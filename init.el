@@ -78,7 +78,16 @@
   :ensure t)
 
 (use-package doom-modeline
-    :ensure t
+  :ensure t
+  :straight t
+  :defer t
+  :custom
+  (doom-modeline-buffer-file-name 'buffer-name)
+  (doom-modeline-project-detection 'project)
+  (doom-modeline-buffer-file-name t)
+  (doom-modeline-vcs-max-length 25)
+  :config
+  (setq doom-modeline-icon t)
     :hook
     (after-init . doom-modeline-mode))
 
@@ -184,8 +193,111 @@
 (use-package json)
 
 (use-package lsp-mode
+  :ensure t
+  :straight t
   :defer t
-  :commands lsp)
+  :hook (
+	 (
+	  (js-mode
+	   tsx-ts-mode
+	   typescript-ts-base-mode
+	   css-mode
+	   go-ts-mode-hook
+	   js-ts-mode
+	   web-mode)
+	  . lsp-deferred))
+  :commands lsp
+  :custom
+
+  (lsp-keymap-prefix "C-c l")                           ;; Set the prefix for LSP commands.
+  (lsp-inlay-hint-enable nil)                           ;; Usage of inlay hints.
+  (lsp-completion-provider :none)                       ;; Disable the default completion provider.
+  (lsp-session-file (locate-user-emacs-file ".lsp-session")) ;; Specify session file location.
+  (lsp-log-io nil)                                      ;; Disable IO logging for speed.
+  (lsp-idle-delay 0.5)                                  ;; Set the delay for LSP to 0 (debouncing).
+  (lsp-keep-workspace-alive nil)                        ;; Disable keeping the workspace alive.
+  ;; Core settings
+  (lsp-enable-xref t)                                   ;; Enable cross-references.
+  (lsp-auto-configure t)                                ;; Automatically configure LSP.
+  (lsp-enable-links nil)                                ;; Disable links.
+  (lsp-eldoc-enable-hover t)                            ;; Enable ElDoc hover.
+  (lsp-enable-file-watchers nil)                        ;; Disable file watchers.
+  (lsp-enable-folding nil)                              ;; Disable folding.
+  (lsp-enable-imenu t)                                  ;; Enable Imenu support.
+  (lsp-enable-indentation nil)                          ;; Disable indentation.
+  (lsp-enable-on-type-formatting nil)                   ;; Disable on-type formatting.
+  (lsp-enable-suggest-server-download t)                ;; Enable server download suggestion.
+  (lsp-enable-symbol-highlighting t)                    ;; Enable symbol highlighting.
+  (lsp-enable-text-document-color t)                    ;; Enable text document color.
+  ;; Modeline settings
+  (lsp-modeline-code-actions-enable nil)                ;; Keep modeline clean.
+  (lsp-modeline-diagnostics-enable nil)                 ;; Use `flymake' instead.
+  (lsp-modeline-workspace-status-enable t)              ;; Display "LSP" in the modeline when enabled.
+  (lsp-signature-doc-lines 1)                           ;; Limit echo area to one line.
+  (lsp-eldoc-render-all t)                              ;; Render all ElDoc messages.
+  ;; Completion settings
+  (lsp-completion-enable t)                             ;; Enable completion.
+  (lsp-completion-enable-additional-text-edit t)        ;; Enable additional text edits for completions.
+  (lsp-enable-snippet nil)                              ;; Disable snippets
+  (lsp-completion-show-kind t)                          ;; Show kind in completions.
+  ;; Lens settings
+  (lsp-lens-enable t)                                   ;; Enable lens support.
+  ;; Headerline settings
+  (lsp-headerline-breadcrumb-enable-symbol-numbers t)   ;; Enable symbol numbers in the headerline.
+  (lsp-headerline-arrow "▶")                            ;; Set arrow for headerline.
+  (lsp-headerline-breadcrumb-enable-diagnostics nil)    ;; Disable diagnostics in headerline.
+  (lsp-headerline-breadcrumb-icons-enable nil)          ;; Disable icons in breadcrumb.
+  ;; Semantic settings
+  (lsp-semantic-tokens-enable nil))
+
+(use-package lsp-ui
+  :ensure t
+  :after lsp-mode
+  :config
+  (setq lsp-ui-sideline-show-diagnostics t
+	lsp-ui-sideline-show-hover t
+	lsp-ui-doc-enable t))
+
+(use-package flycheck
+  :ensure t
+  :init
+  (global-flycheck-mode))
+
+(use-package diff-hl
+  :defer t
+  :straight t
+  :ensure t
+  :hook
+  (find-file . (lambda ()
+                 (global-diff-hl-mode)           ;; Enable Diff-HL mode for all files.
+                 (diff-hl-flydiff-mode)          ;; Automatically refresh diffs.
+                 (diff-hl-margin-mode)))         ;; Show diff indicators in the margin.
+  :custom
+  (diff-hl-side 'left)                           ;; Set the side for diff indicators.
+  (diff-hl-margin-symbols-alist '((insert . "┃") ;; Customize symbols for each change type.
+                                  (delete . "-")
+                                  (change . "┃")
+                                  (unknown . "┆")
+                                  (ignored . "i"))))
+
+
+(use-package indent-guide
+  :defer t
+  :straight t
+  :ensure t
+  :hook
+  (prog-mode . indent-guide-mode)  ;; Activate indent-guide in programming modes.
+  :config
+  (setq indent-guide-char "│"))
+
+(use-package treesit-auto
+  :ensure t
+  :straight t
+  :custom
+  (treesit-auto-install 'prompt)
+  :config
+  (treesit-auto-add-to-auto-mode-alist 'all)
+  (global-treesit-auto-mode t))
 
 (use-package darcula-theme
   :ensure t)
