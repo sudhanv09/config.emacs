@@ -8,8 +8,7 @@
 ;; Projectile
 (use-package projectile
   :config
-  (require 'projectile-config)
-)
+  (require 'projectile-config))
 
 ;; Which key
 (use-package which-key
@@ -22,8 +21,7 @@
   :demand t
   :config 
   (meow-global-mode 1)
-  (require 'meow-config)
-  )
+  (require 'meow-config))
 
 ;; Theme
 (use-package doom-themes
@@ -71,9 +69,16 @@
   (global-corfu-mode)
   :custom
   (corfu-auto t)
-  (corfu-auto-delay 0)
-  (corfu-auto-prefix 0)
-  (completion-styles '(basic)))
+  (corfu-auto-delay 0.1)
+  (corfu-auto-prefix 1)
+  (corfu-cycle t)
+  (corfu-preselect 'prompt)
+  :config
+  (add-hook 'minibuffer-setup-hook
+            (lambda ()
+              (when (where-is-internal 'completion-at-point (list (current-local-map)))
+                (setq-local corfu-auto nil)
+                (corfu-mode 1)))))
 
 
 (use-package orderless
@@ -98,6 +103,11 @@
                                   (unknown . "┆")
                                   (ignored . "i"))))
 
+;; LSP Configuration
+(use-package lsp-mode
+  :config
+  (require 'lsp-config))
+
 
 (use-package indent-guide
   :hook
@@ -106,7 +116,14 @@
   (setq indent-guide-char "│"))
 
 
-(use-package lsp-ui)
+(use-package pyvenv
+  :config
+  (pyvenv-mode 1))
+
+(use-package auto-virtualenv
+  :after pyvenv
+  :hook ((python-mode python-ts-mode) . auto-virtualenv-set-virtualenv))
+
 (use-package treesit-auto
     :custom
     (treesit-auto-install 'prompt)

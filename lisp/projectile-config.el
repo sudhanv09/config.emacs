@@ -1,4 +1,3 @@
-
 (setq projectile-project-search-path '("~/code"))
 (projectile-mode +1)
 
