@@ -1,50 +1,111 @@
- ;;; -*- lexical-binding: t; -*-
 
-(defvar-keymap Buffer
-  :doc "Buffers"
-  "b" #'switch-to-buffer
-  "l" #'electric-buffer-list
-  "d" #'kill-buffer
-  "p" #'previous-buffer
-  "n" #'next-buffer
-  "B" #'switch-to-buffer
-  "r" #'rename-buffer
-  "R" #' revert-buffer)
+(require 'meow)
 
-(defvar-keymap Window
-  :doc "Window Management"
+(defun reload-config ()
+  "Reload Emacs config."
+  (interactive)
+  (load-file (expand-file-name "init.el" user-emacs-directory)))
 
-  "H" #'shrink-window-horizontally
-  "L" #'enlarge-window-horizontally
-  "J" #'shrink-window
-  "K" #'enlarge-window
-
-  "s" #'split-window-below
-  "v" #'split-window-right
-
+(defun my/meow-setup ()
+  "Meow keybinds"
+  (let ((global-leader-map (make-sparse-keymap)))
+    (dolist (key '("c" "g" "h" "m" "x"))
+          (define-key global-leader-map (kbd key) #'meow-keypad-start))
   
-  "o" #'delete-other-windows
+    (meow-motion-overwrite-define-key
+      '("j" . meow-next)
+      '("k" . meow-prev)
+      ;; global leader
+      `("SPC" . ,global-leader-map)))
+    (meow-leader-define-key
+       '("rr" . reload-config)
+       '("1" . meow-digit-argument)
+       '("2" . meow-digit-argument)
+       '("3" . meow-digit-argument)
+       '("4" . meow-digit-argument)
+       '("5" . meow-digit-argument)
+       '("6" . meow-digit-argument)
+       '("7" . meow-digit-argument)
+       '("8" . meow-digit-argument)
+       '("9" . meow-digit-argument)
+       '("0" . meow-digit-argument)
+       '("/" . meow-keypad-describe-key)
+       '("?" . meow-cheatsheet)
+       '("f" . find-file)
+       '("b" . switch-to-buffer)
+       '("k" . kill-buffer)
+       '("s" . save-buffer)
+       '("p" . project-find-file)
+       '("x" . execute-extended-command)
+       '("g" . magit-status)
+       '("h" . describe-symbol))
   
-  "u" #'winner-undo
-  "r" #'winner-redo
+    (meow-normal-define-key
+       `(,meow-local-leader-prefix . ,emacs-local-leader-prefix)
+       '("1" . meow-expand-1)
+       '("2" . meow-expand-2)
+       '("3" . meow-expand-3)
+       '("4" . meow-expand-4)
+       '("5" . meow-expand-5)
+       '("6" . meow-expand-6)
+       '("7" . meow-expand-7)
+       '("8" . meow-expand-8)
+       '("9" . meow-expand-9)
+       '("0" . meow-expand-0)
+       '("-" . negative-argument)
+       '(";" . meow-reverse)
+       '("," . meow-inner-of-thing)
+       '("." . meow-bounds-of-thing)
+       '("[" . meow-beginning-of-thing)
+       '("]" . meow-end-of-thing)
+       '("a" . meow-append)
+       '("A" . meow-open-below)
+       '("b" . meow-back-word)
+       '("B" . meow-back-symbol)
+       '("c" . meow-change)
+       '("d" . meow-delete)
+       '("D" . meow-backward-delete)
+       '("e" . meow-next-word)
+       '("E" . meow-next-symbol)
+       '("f" . meow-find)
+       '("g" . meow-cancel-selection)
+       '("G" . meow-grab)
+       '("h" . meow-left)
+       '("H" . meow-left-expand)
+       '("i" . meow-insert)
+       '("I" . meow-open-above)
+       '("j" . meow-next)
+       '("J" . meow-next-expand)
+       '("k" . meow-prev)
+       '("K" . meow-prev-expand)
+       '("l" . meow-right)
+       '("L" . meow-right-expand)
+       '("m" . meow-join)
+       '("n" . meow-search)
+       '("o" . meow-block)
+       '("O" . meow-to-block)
+       '("p" . meow-yank)
+       '("q" . keyboard-quit)
+       '("Q" . meow-goto-line)
+       '("r" . meow-replace)
+       '("R" . meow-swap-grab)
+       '("s" . meow-kill)
+       '("t" . meow-till)
+       '("u" . meow-undo)
+       '("U" . meow-undo-in-selection)
+       '("v" . meow-visit)
+       '("w" . meow-mark-word)
+       '("W" . meow-mark-symbol)
+       '("x" . meow-line)
+       '("X" . meow-goto-line)
+       '("y" . meow-save)
+       '("Y" . meow-sync-grab)
+       '("z" . meow-pop-selection)
+       '("'" . repeat)
+       '("<escape>" . keyboard-quit)))
 
-  "w" #'ace-window)
-
-(defvar-keymap Git
-  :doc "Magit / Git Commands"
-  "g" #'magit-status
-  "l" #'magit-log
-  "d" #'magit-diff
-  "F" #'magit-file-dispatch
-  "x" #'magit-dispatch)
-
-(defalias 'Git Git)
-(defalias 'Window Window)
-(defalias 'Buffer Buffer)
-
-(define-key global-map (kbd "C-c b") 'Buffer)
-(define-key global-map (kbd "C-c w") 'Window)
-(define-key global-map (kbd "C-c g") 'Git)
-
-
+(define-key meow-insert-state-keymap
+  (kbd meow-local-leader-insert-prefix)
+  (meow--parse-def emacs-local-leader-prefix))
+    
 (provide 'keybinds)

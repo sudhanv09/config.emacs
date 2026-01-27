@@ -1,105 +1,27 @@
+;;; -*- lexical-binding: t; -*-
 
+(use-package meow
+  :ensure t
+  :demand t
+  :init
   (setq meow-use-clipboard t)
   (setq emacs-local-leader-prefix "SPC")
   (setq meow-local-leader-prefix "/")
   (setq meow-local-leader-insert-prefix "C-/")
   (setq meow-expand-hint-remove-delay 3.0)
+
+  ;; Set cursor types
+  (setq meow-cursor-type-normal 'box
+        meow-cursor-type-insert '(bar . 2)
+        meow-cursor-type-beacon 'hollow
+        meow-cursor-type-motion 'box)
+
   (add-hook 'git-commit-mode-hook 'meow-insert-mode)
 
-  (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
-
-  (setq global-leader-map
-      (let ((keymap (make-sparse-keymap)))
-        (define-key keymap (kbd "c") 'meow-keypad-start)
-        (define-key keymap (kbd "g") 'meow-keypad-start)
-        (define-key keymap (kbd "h") 'meow-keypad-start)
-        (define-key keymap (kbd "m") 'meow-keypad-start)
-        (define-key keymap (kbd "x") 'meow-keypad-start)
-        keymap))
-
-  (meow-motion-overwrite-define-key
-    '("j" . meow-next)
-    '("k" . meow-prev)
-    ;; global leader
-    `("SPC" . ,global-leader-map)
-    )
-
-  (meow-normal-define-key
-   `(,meow-local-leader-prefix . ,emacs-local-leader-prefix)
-   '("1" . meow-1)
-   '("2" . meow-2)
-   '("3" . meow-3)
-   '("4" . meow-4)
-   '("5" . meow-5)
-   '("6" . meow-6)
-   '("7" . meow-7)
-   '("8" . meow-8)
-   '("9" . meow-9)
-   '("0" . meow-0)
-   '("-" . negative-argument)
-   '(";" . meow-reverse)
-   '("," . meow-inner-of-thing)
-   '("." . meow-bounds-of-thing)
-   '("[" . meow-beginning-of-thing)
-   '("]" . meow-end-of-thing)
-   '("a" . meow-append)
-   '("A" . meow-open-below)
-   '("b" . meow-back-word)
-   '("B" . meow-back-symbol)
-   '("c" . meow-change)
-   '("d" . meow-delete)
-   '("D" . meow-backward-delete)
-   '("e" . meow-next-word)
-   '("E" . meow-next-symbol)
-   '("f" . meow-find)
-   '("g" . meow-cancel-selection)
-   '("G" . meow-grab)
-   '("h" . meow-left)
-   '("H" . meow-left-expand)
-   '("i" . meow-insert)
-   '("I" . meow-open-above)
-   '("j" . meow-next)
-   '("J" . meow-next-expand)
-   '("k" . meow-prev)
-   '("K" . meow-prev-expand)
-   '("l" . meow-right)
-   '("L" . meow-right-expand)
-   '("m" . meow-join)
-   '("n" . meow-search)
-   '("o" . meow-block)
-   '("O" . meow-to-block)
-   '("p" . meow-yank)
-   '("q" . keyboard-quit)
-   '("Q" . meow-goto-line)
-   '("r" . meow-replace)
-   '("R" . meow-swap-grab)
-   '("s" . meow-kill)
-   '("t" . meow-till)
-   '("u" . meow-undo)
-   '("U" . meow-undo-in-selection)
-   '("v" . meow-visit)
-   '("w" . meow-mark-word)
-   '("W" . meow-mark-symbol)
-   '("x" . meow-line)
-   '("X" . meow-goto-line)
-   '("y" . meow-save)
-   '("Y" . meow-sync-grab)
-   '("z" . meow-pop-selection)
-   '("'" . repeat)
-   '("<escape>" . keyboard-quit))
-
-(define-key meow-normal-state-keymap (kbd "y") #'kill-ring-save)
-
-(define-key meow-insert-state-keymap
-	    (kbd meow-local-leader-insert-prefix)
-	    (meow--parse-def emacs-local-leader-prefix))
-
-(defun reload-config ()
-  "Reload Emacs config"
-  (interactive)
-  (load-file "~/.config/emacs/init.el"))
-
-(meow-leader-define-key
- '("rr" . reload-config))
+  :config
+  (require 'keybinds)
+  (my/meow-setup)
+  (meow-global-mode 1)
+  )
 
 (provide 'meow-config)

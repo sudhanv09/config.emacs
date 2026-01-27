@@ -1,33 +1,22 @@
 
-(tool-bar-mode -1)             ; Hide the outdated icons
-(scroll-bar-mode -1)           ; Hide the always-visible scrollbar
-(setq inhibit-splash-screen t) ; Remove the "Welcome to GNU Emacs" splash screen
-(setq use-file-dialog nil)      ; Ask for textual confirmation instead of GUI
-(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
+(add-to-list 'load-path
+  (expand-file-name "lisp" user-emacs-directory))
 
-;; Set up straight.el
-(defvar bootstrap-version)
-(let ((bootstrap-file
-    (expand-file-name
-      "straight/repos/straight.el/bootstrap.el"
-      (or (bound-and-true-p straight-base-dir)
-        user-emacs-directory)))
-    (bootstrap-version 7))
-  (unless (file-exists-p bootstrap-file)
-    (with-current-buffer
-      (url-retrieve-synchronously
-       "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
-       'silent 'inhibit-cookies)
-    (goto-char (point-max))
-    (eval-print-last-sexp)))
-  (load bootstrap-file nil 'nomessage))
-
-;; Install use-package
-(straight-use-package 'use-package)
-(setq straight-use-package-by-default t)
-(setq use-package-always-defer t)
-
-(require 'use-package)
-
+(require 'elpaca)
+(require 'ui)
 (require 'packages)
+(require 'meow-config)
+
+(elpaca-wait)
+
+(require 'lsp)
+
+(require 'uniquify)
+(electric-pair-mode t)
+(show-paren-mode 1)
+(setq-default indent-tabs-mode nil)
+(save-place-mode t)
+(global-auto-revert-mode t)
+(add-hook 'prog-mode-hook 'display-line-numbers-mode)
+
 
