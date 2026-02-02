@@ -99,7 +99,7 @@
   :config
   (setq highlight-indent-guides-method 'character)
   :hook
-  (add-hook 'prog-mode 'highlight-indent-guides-mode))
+  (prog-mode . highlight-indent-guides-mode))
 
 (use-package direnv
   :ensure t
@@ -109,6 +109,11 @@
 (use-package dashboard
   :ensure t
   :config
+  (setq dashboard-items '((projects . 5)
+                          (recents . 5)
+                          (bookmarks . 5)))
+  (setq dashboard-projects-backend 'project-el)
+  (setq dashboard-center-content t)
   (add-hook 'elpaca-after-init-hook #'dashboard-insert-startupify-lists)
   (add-hook 'elpaca-after-init-hook #'dashboard-initialize)
   (dashboard-setup-startup-hook))
