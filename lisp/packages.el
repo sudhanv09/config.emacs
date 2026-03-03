@@ -7,6 +7,11 @@
   :init
   (add-hook 'emacs-startup-hook #'easysession-save-mode 103))
 
+(use-package casual
+  :ensure t)
+
+(use-package nim-mode
+  :ensure t)
 
 (use-package vertico
   :ensure t
@@ -105,6 +110,14 @@
   :ensure t
   :config
   (direnv-mode))
+
+(use-package avy
+  :ensure t)
+
+(use-package ace-window
+  :ensure t
+  :config
+  (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 
 (use-package dashboard
   :ensure t
