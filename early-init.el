@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t; -*-
+
 (setq package-enable-at-startup nil)
 (setq package-install-upgrade-built-in t)
 
@@ -7,7 +9,6 @@
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 
-(setq user-emacs-directory (expand-file-name "~/.config/emacs/"))
 (defconst emacs-data-dir  (expand-file-name "~/.local/share/emacs/"))
 (defconst emacs-cache-dir (expand-file-name "~/.cache/emacs/"))
 (setq package-user-dir
@@ -17,14 +18,14 @@
 
 (setq
  native-comp-eln-load-path
-  (list (expand-file-name "eln-cache/" emacs-cache-dir))
+ (list (expand-file-name "eln-cache/" emacs-cache-dir))
 
  backup-directory-alist
-  `(("." . ,(expand-file-name "backups/" emacs-cache-dir)))
- 
-  auto-save-list-file-prefix
-        (expand-file-name "auto-save-list/.saves-"
-                          emacs-cache-dir)
+ `(("." . ,(expand-file-name "backups/" emacs-cache-dir)))
+
+ auto-save-list-file-prefix
+ (expand-file-name "auto-save-list/.saves-"
+                   emacs-cache-dir)
  auto-save-file-name-transforms
  `((".*" ,(expand-file-name "auto-save/" emacs-cache-dir) t)))
 

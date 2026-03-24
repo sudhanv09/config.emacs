@@ -1,6 +1,7 @@
+;;; -*- lexical-binding: t; -*-
 
 (add-to-list 'load-path
-  (expand-file-name "lisp" user-emacs-directory))
+             (expand-file-name "lisp" user-emacs-directory))
 
 (require 'elpaca)
 (require 'ui)
